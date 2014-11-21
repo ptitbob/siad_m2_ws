@@ -1,12 +1,14 @@
-package fr.univ.blois.siad.m2.ws.jaxb.td01.bean;
+package fr.univ.blois.siad.m2.ws.jaxb.td01.bean.person;
 
-public class Person {
+public abstract class Person {
 
     private Long id;
 
     private String name;
 
     private String surname;
+
+    // adresse
 
     public Person() {
     }
