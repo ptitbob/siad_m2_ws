@@ -6,6 +6,14 @@ public class Adherent extends Person {
 
     private String membershipDate; // date d'ahésion sous la forma YYYYMMDD
 
+    public Adherent() {
+    }
+
+    public Adherent(Long id, String name, String surname, String membershipDate) {
+        super(id, name, surname);
+        this.membershipDate = membershipDate;
+    }
+
     public String getMembershipDate() {
         return membershipDate;
     }

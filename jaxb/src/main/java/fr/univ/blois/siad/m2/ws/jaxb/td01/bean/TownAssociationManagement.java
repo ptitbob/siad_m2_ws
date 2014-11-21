@@ -1,7 +1,9 @@
 package fr.univ.blois.siad.m2.ws.jaxb.td01.bean;
 
 import fr.univ.blois.siad.m2.ws.jaxb.td01.bean.club.Association;
+import fr.univ.blois.siad.m2.ws.jaxb.td01.bean.club.Sport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +20,7 @@ public class TownAssociationManagement {
 
     public TownAssociationManagement(String townName) {
         this.townName = townName;
+        this.associationList = new ArrayList<>();
     }
 
     public List<Association> getAssociationList() {
@@ -35,4 +38,10 @@ public class TownAssociationManagement {
     public void setTownName(String townName) {
         this.townName = townName;
     }
+
+    public <A extends Association> A addAssociation(A association) {
+        associationList.add(association);
+        return association;
+    }
+
 }
