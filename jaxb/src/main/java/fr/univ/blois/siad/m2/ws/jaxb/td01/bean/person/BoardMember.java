@@ -1,7 +1,10 @@
 package fr.univ.blois.siad.m2.ws.jaxb.td01.bean.person;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 public class BoardMember extends Adherent {
 
+    @XmlAttribute
     private BoardMemberType boardMemberType;
 
     public BoardMember() {
