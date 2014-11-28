@@ -24,6 +24,10 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entity representant un utilisateur de l'application.
@@ -35,6 +39,7 @@ import javax.persistence.TemporalType;
     @NamedQuery(name=User.NQ_FIND_BY_LOGIN_AND_PASS, query="select u from User u where u.login=:login and u.password=:pass"),
     @NamedQuery(name = User.NQ_LOAD_BY_ID_WITH_ADHESIONS, query = "select u from User u left join fetch u.adhesionList al left join fetch al.activity  where u.id=:identifiant")
 })
+@XmlRootElement
 public class User implements Serializable {
     
     @Id

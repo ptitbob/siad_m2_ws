@@ -24,6 +24,7 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity representant un evenement.
@@ -56,6 +57,7 @@ public class Activity implements Serializable {
         inverseJoinColumns=@JoinColumn(name="AC_CAT_ID", referencedColumnName="CATEGORY_ID"))
     private Set<Category> categoryList;
     @OneToMany(mappedBy="activity")
+    @XmlTransient
     private Set<Adhesion> adhesionList;
 
     /**

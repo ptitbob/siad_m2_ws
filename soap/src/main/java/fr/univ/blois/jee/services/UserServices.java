@@ -6,6 +6,7 @@ package fr.univ.blois.jee.services;
 
 import fr.univ.blois.jee.domain.User;
 import fr.univ.blois.jee.exception.UserUnknownException;
+import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -15,6 +16,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 /**
  * Interface Local de l'EJB regroupant les services relatifs aux utilisateurs
@@ -89,4 +92,13 @@ public class UserServices {
         return result;
     }
 
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public List<User> getUserList() {
+        Query query = entityManager.createQuery("select u from User u");
+        return query.getResultList();
+    }
+
+    public User getUserById(long id) {
+        return entityManager.find(User.class, id);
+    }
 }
