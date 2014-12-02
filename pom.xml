@@ -11,6 +11,7 @@
         <module>jaxb</module>
         <module>json</module>
         <module>soap</module>
+        <module>restful</module>
     </modules>
 
     <properties>
@@ -41,7 +42,6 @@
                 <groupId>javax</groupId>
                 <artifactId>javaee-api</artifactId>
                 <version>${version.javaee}</version>
-                <scope>provided</scope>
             </dependency>
 
             <!-- CDI -->
