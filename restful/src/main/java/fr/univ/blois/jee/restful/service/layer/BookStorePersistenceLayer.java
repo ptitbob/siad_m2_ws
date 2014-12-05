@@ -52,7 +52,7 @@ public class BookStorePersistenceLayer {
   public Book saveBook(String bookTitle, Genre genre) {
     Book book = new Book(bookIndex.getAndIncrement(), bookTitle, genre);
     bookMap.put(book.getId(), book);
-    return null;
+    return book;
   }
 
   public Author saveAuthor(String authorName) {
@@ -69,7 +69,7 @@ public class BookStorePersistenceLayer {
     return new ArrayList<>(authorMap.values());
   }
 
-  public Author getAuthorBuId(int id) {
+  public Author getAuthorById(int id) {
     return authorMap.get(id);
   }
 
@@ -77,12 +77,21 @@ public class BookStorePersistenceLayer {
     return bookMap.get(id);
   }
 
-  public void deleteAuthor(int id) throws AuthorNotExistException {
+  public void deleteAuthor(int id) throws DeleteItemNotExist {
     Author author = authorMap.get(id);
     if (author != null) {
       authorMap.remove(author);
     } else {
-      throw new AuthorNotExistException("L'auteur n'existe pas");
+      throw new DeleteItemNotExist("L'auteur n'existe pas");
+    }
+  }
+
+  public void deleteBook(int id) throws DeleteItemNotExist {
+    Book book = bookMap.get(id);
+    if (book == null) {
+      throw new DeleteItemNotExist("Le livre n'existe pas");
+    } else {
+      bookMap.remove(book);
     }
   }
 }
