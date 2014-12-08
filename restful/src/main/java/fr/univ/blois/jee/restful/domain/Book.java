@@ -1,16 +1,22 @@
 package fr.univ.blois.jee.restful.domain;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Representation des information de livre avec la liste des auteurs
  */
+@XmlRootElement(name = "Livre")
 public class Book extends BookInformation {
 
   /**
    * List des auteurs
    */
+  @XmlElementWrapper(name = "auteurs")
+  @XmlElement(name = "auteur")
   private List<User> authorList = new ArrayList<>();
 
   public Book() {

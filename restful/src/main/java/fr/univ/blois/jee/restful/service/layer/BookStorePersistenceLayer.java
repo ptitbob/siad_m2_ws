@@ -3,7 +3,6 @@ package fr.univ.blois.jee.restful.service.layer;
 import fr.univ.blois.jee.restful.domain.Author;
 import fr.univ.blois.jee.restful.domain.Book;
 import fr.univ.blois.jee.restful.domain.Genre;
-import fr.univ.blois.jee.restful.service.AuthorNotExistException;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -73,7 +72,7 @@ public class BookStorePersistenceLayer {
     return authorMap.get(id);
   }
 
-  public Book geBookById(int id) {
+  public Book getBookById(int id) {
     return bookMap.get(id);
   }
 
@@ -94,4 +93,5 @@ public class BookStorePersistenceLayer {
       bookMap.remove(book.getId());
     }
   }
+
 }

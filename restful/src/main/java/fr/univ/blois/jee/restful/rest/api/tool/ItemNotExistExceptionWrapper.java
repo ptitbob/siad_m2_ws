@@ -1,6 +1,6 @@
 package fr.univ.blois.jee.restful.rest.api.tool;
 
-import fr.univ.blois.jee.restful.service.AuthorNotExistException;
+import fr.univ.blois.jee.restful.service.ItemNotExistException;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -12,9 +12,9 @@ import javax.ws.rs.ext.Provider;
  * A remarquer, nous changeons ici le type (content-type) renvoyé : L'erreur est un texte a afficher dans l'IHM du client (par exemple)
  */
 @Provider
-public class AuthorNotExistExceptionWrapper implements ExceptionMapper<AuthorNotExistException> {
+public class ItemNotExistExceptionWrapper implements ExceptionMapper<ItemNotExistException> {
     @Override
-    public Response toResponse(AuthorNotExistException exception) {
+    public Response toResponse(ItemNotExistException exception) {
         return Response.status(580).entity(exception.getMessage()).type("text/plain").build();
     }
 }

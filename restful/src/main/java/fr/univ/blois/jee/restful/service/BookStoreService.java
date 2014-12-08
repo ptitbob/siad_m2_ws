@@ -7,6 +7,9 @@ import fr.univ.blois.jee.restful.service.layer.DeleteItemNotExist;
 import java.util.ArrayList;
 import java.util.List;
 
+import static fr.univ.blois.jee.restful.service.ItemNotExistException.ItemMissingSelection.AUTHOR_MISSED;
+import static fr.univ.blois.jee.restful.service.ItemNotExistException.ItemMissingSelection.BOOK_MISSED;
+
 /**
  * Created by frobert on 05/12/2014.
  */
@@ -17,7 +20,7 @@ public class BookStoreService {
    * @return
    */
   public List<User> getAuthorList() {
-    BookStorePersistenceLayer bookStorePersistenceLayer = BookStorePersistenceLayer.getInstance();
+    BookStorePersistenceLayer bookStorePersistenceLayer = getBookStorePersistenceLayer();
     List<User> authorList = new ArrayList<>();
     for (Author author : bookStorePersistenceLayer.getAllAuthor()) {
       authorList.add(new User(author.getId(), author.getName()));
@@ -26,7 +29,7 @@ public class BookStoreService {
   }
 
   public List<BookInformation> getBookList() {
-    BookStorePersistenceLayer bookStorePersistenceLayer = BookStorePersistenceLayer.getInstance();
+    BookStorePersistenceLayer bookStorePersistenceLayer = getBookStorePersistenceLayer();
     List<BookInformation> bookList = new ArrayList<>();
     for (Book book : bookStorePersistenceLayer.getAllBook()) {
       bookList.add(new BookInformation(book.getId(), book.getTitle(), book.getGenre()));
@@ -35,24 +38,33 @@ public class BookStoreService {
   }
 
   public Author addAuthor(String authorName) {
-    BookStorePersistenceLayer bookStorePersistenceLayer = BookStorePersistenceLayer.getInstance();
+    BookStorePersistenceLayer bookStorePersistenceLayer = getBookStorePersistenceLayer();
     return bookStorePersistenceLayer.saveAuthor(authorName);
   }
 
-  public Author getAuthor(int authorId) throws AuthorNotExistException {
-    BookStorePersistenceLayer bookStorePersistenceLayer = BookStorePersistenceLayer.getInstance();
+  public Author getAuthor(int authorId) throws ItemNotExistException {
+    BookStorePersistenceLayer bookStorePersistenceLayer = getBookStorePersistenceLayer();
     Author author = bookStorePersistenceLayer.getAuthorById(authorId);
     if (author == null) {
-      throw new AuthorNotExistException(authorId);
+      throw new ItemNotExistException(AUTHOR_MISSED, authorId);
     }
     return author;
   }
 
-  public Book addBook(String title, Genre genre, int authorId) throws AuthorNotExistException {
-    BookStorePersistenceLayer bookStorePersistenceLayer = BookStorePersistenceLayer.getInstance();
+  /**
+   *
+   * @param title titre du livre
+   * @param genre genre du livre
+   * @param authorId id de l'auteur
+   * @return Livre ajouté
+   * @throws ItemNotExistException si l'auteur n'a pas pu être localisé
+   */
+  public Book addBook(String title, Genre genre, int authorId) throws ItemNotExistException {
+    BookStorePersistenceLayer bookStorePersistenceLayer = getBookStorePersistenceLayer();
     Author author = getAuthor(authorId);
     if (author == null) {
-      throw new AuthorNotExistException("L'auteur demandé n'existe pas");
+      // throw new ItemNotExistException("L'auteur demandé n'existe pas");
+      throw new ItemNotExistException(AUTHOR_MISSED, authorId);
     }
     Book book = bookStorePersistenceLayer.saveBook(title, genre);
     author.addBook(book);
@@ -65,21 +77,44 @@ public class BookStoreService {
    * @param id identifiant de l'auteur
    * @param authorName nom de l'auteur
    * @return l'auteur modifié
-   * @throws fr.univ.blois.jee.restful.service.AuthorUpdatingProcessAborted en cas d'erreur de mise à jour
+   * @throws AuthorUpdatingProcessAbortedException en cas d'erreur de mise à jour
    */
-  public Author updateAuthor(int id, String authorName) throws AuthorUpdatingProcessAborted {
+  public Author updateAuthor(int id, String authorName) throws AuthorUpdatingProcessAbortedException {
     try {
       Author author = getAuthor(id);
       author.setName(authorName);
       return author;
-    } catch (AuthorNotExistException e) {
-      throw new AuthorUpdatingProcessAborted(id);
+    } catch (ItemNotExistException e) {
+      throw new AuthorUpdatingProcessAbortedException(id);
     }
   }
 
 
   public void deleteAuthor(int id) throws DeleteItemNotExist {
-    BookStorePersistenceLayer bookStorePersistenceLayer = BookStorePersistenceLayer.getInstance();
+    BookStorePersistenceLayer bookStorePersistenceLayer = getBookStorePersistenceLayer();
     bookStorePersistenceLayer.deleteAuthor(id);
+  }
+
+  public Book getBook(int id) {
+    BookStorePersistenceLayer bookStorePersistenceLayer = getBookStorePersistenceLayer();
+    return bookStorePersistenceLayer.getBookById(id);
+  }
+
+  private BookStorePersistenceLayer getBookStorePersistenceLayer() {
+    return BookStorePersistenceLayer.getInstance();
+  }
+
+  public void updateBook(int id, String title, Genre genre) throws ItemNotExistException {
+    BookStorePersistenceLayer bookStorePersistenceLayer = getBookStorePersistenceLayer();
+    Book book = bookStorePersistenceLayer.getBookById(id);
+    if (book == null) {
+      throw new ItemNotExistException(BOOK_MISSED, id);
+    }
+    book.setTitle(title);
+    book.setGenre(genre);
+  }
+
+  public void deleteBook(int id) throws DeleteItemNotExist {
+    getBookStorePersistenceLayer().deleteBook(id);
   }
 }

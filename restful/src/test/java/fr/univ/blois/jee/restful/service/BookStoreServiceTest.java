@@ -1,7 +1,6 @@
 package fr.univ.blois.jee.restful.service;
 
 import fr.univ.blois.jee.restful.domain.*;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class BookStoreServiceTest {
   }
 
   @Test
-  public void testSaveAndGetAuthor() throws AuthorNotExistException {
+  public void testSaveAndGetAuthor() throws ItemNotExistException {
     BookStoreService bookStoreService = new BookStoreService();
     Author author = bookStoreService.addAuthor("J. K. Rowling");
     assertNotNull(author);
@@ -53,19 +52,19 @@ public class BookStoreServiceTest {
       assertNotNull(book);
       assertTrue(book.getAuthorList().size() == 1);
       assertTrue(author.getBookList().size() == 1);
-    } catch (AuthorNotExistException e) {
+    } catch (ItemNotExistException e) {
       fail("Exception non attendu");
     }
   }
 
-  @Test(expected = AuthorNotExistException.class)
-  public void testAddBookUnexistantAuthor() throws AuthorNotExistException {
+  @Test(expected = ItemNotExistException.class)
+  public void testAddBookUnexistantAuthor() throws ItemNotExistException {
     BookStoreService bookStoreService = new BookStoreService();
     Book book = bookStoreService.addBook("blah blah", Genre.MISC, Integer.MIN_VALUE);
   }
 
-  @Test(expected = AuthorNotExistException.class)
-  public void testGetUnregisteredAuthor() throws AuthorNotExistException {
+  @Test(expected = ItemNotExistException.class)
+  public void testGetUnregisteredAuthor() throws ItemNotExistException {
     BookStoreService bookStoreService = new BookStoreService();
     Author author = bookStoreService.getAuthor(Integer.MAX_VALUE);
     fail("Nous attendions une exception precise ici");

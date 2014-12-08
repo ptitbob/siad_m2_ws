@@ -2,8 +2,8 @@ package fr.univ.blois.jee.restful.rest.api;
 
 import fr.univ.blois.jee.restful.domain.Author;
 import fr.univ.blois.jee.restful.domain.User;
-import fr.univ.blois.jee.restful.service.AuthorNotExistException;
-import fr.univ.blois.jee.restful.service.AuthorUpdatingProcessAborted;
+import fr.univ.blois.jee.restful.service.ItemNotExistException;
+import fr.univ.blois.jee.restful.service.AuthorUpdatingProcessAbortedException;
 import fr.univ.blois.jee.restful.service.BookStoreService;
 import fr.univ.blois.jee.restful.service.layer.DeleteItemNotExist;
 
@@ -31,13 +31,13 @@ public class AuthorApi {
      * Methode de recupération d'un auteur en utilisant un paramètre de requête GET
      * @param id id de l'auteur
      * @return Auteur
-     * @throws AuthorNotExistException si l'auteur n'a pas été localisé. DOIT RENVOYER UNE ERREUR 580
+     * @throws fr.univ.blois.jee.restful.service.ItemNotExistException si l'auteur n'a pas été localisé. DOIT RENVOYER UNE ERREUR 580
      */
     @GET
     @Produces(value = {APPLICATION_XML, APPLICATION_JSON})
     public Author getAuthorById(
         @QueryParam(value = "id") int id
-    ) throws AuthorNotExistException {
+    ) throws ItemNotExistException {
         return bookStoreService.getAuthor(id);
     }
 
@@ -45,14 +45,14 @@ public class AuthorApi {
      * Methode de recupération d'un auteur indiqué dans l'URL (position finale)
      * @param id id de l'auteur
      * @return Auteur
-     * @throws AuthorNotExistException si l'auteur n'a pas été localisé. DOIT RENVOYER UNE ERREUR 580
+     * @throws fr.univ.blois.jee.restful.service.ItemNotExistException si l'auteur n'a pas été localisé. DOIT RENVOYER UNE ERREUR 580
      */
     @GET
     @Path("{id}")
     @Produces(value = {APPLICATION_XML, APPLICATION_JSON})
     public Author getAuthorByIdInPath(
             @PathParam("id") int id
-    ) throws AuthorNotExistException {
+    ) throws ItemNotExistException {
         return bookStoreService.getAuthor(id);
     }
 
@@ -88,14 +88,14 @@ public class AuthorApi {
      * @param id id de l'auteur à modifier
      * @param name nom de l'auteur (donnée modifiable)
      * @return Response avec un code 200 (reponse vide)
-     * @throws AuthorUpdatingProcessAborted en cas d'erreur de mise à jour
+     * @throws fr.univ.blois.jee.restful.service.AuthorUpdatingProcessAbortedException en cas d'erreur de mise à jour
      */
     @PUT
     @Consumes(value = APPLICATION_FORM_URLENCODED)
     public Response updateAuthor(
             @FormParam("id") int id
             , @FormParam("name") String name
-    ) throws AuthorUpdatingProcessAborted {
+    ) throws AuthorUpdatingProcessAbortedException {
         bookStoreService.updateAuthor(id, name);
         return Response.ok().build();
     }
