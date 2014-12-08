@@ -80,7 +80,7 @@ public class BookStorePersistenceLayer {
   public void deleteAuthor(int id) throws DeleteItemNotExist {
     Author author = authorMap.get(id);
     if (author != null) {
-      authorMap.remove(author);
+      authorMap.remove(author.getId());
     } else {
       throw new DeleteItemNotExist("L'auteur n'existe pas");
     }
@@ -91,7 +91,7 @@ public class BookStorePersistenceLayer {
     if (book == null) {
       throw new DeleteItemNotExist("Le livre n'existe pas");
     } else {
-      bookMap.remove(book);
+      bookMap.remove(book.getId());
     }
   }
 }

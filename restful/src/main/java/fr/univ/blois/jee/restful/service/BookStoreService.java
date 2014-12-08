@@ -2,6 +2,7 @@ package fr.univ.blois.jee.restful.service;
 
 import fr.univ.blois.jee.restful.domain.*;
 import fr.univ.blois.jee.restful.service.layer.BookStorePersistenceLayer;
+import fr.univ.blois.jee.restful.service.layer.DeleteItemNotExist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class BookStoreService {
    * Renvoi la liste des auteur (sans la liste des livres)
    * @return
    */
-  public List<User> getAuthorLisr() {
+  public List<User> getAuthorList() {
     BookStorePersistenceLayer bookStorePersistenceLayer = BookStorePersistenceLayer.getInstance();
     List<User> authorList = new ArrayList<>();
     for (Author author : bookStorePersistenceLayer.getAllAuthor()) {
@@ -38,9 +39,13 @@ public class BookStoreService {
     return bookStorePersistenceLayer.saveAuthor(authorName);
   }
 
-  public Author getAuthor(int authorId) {
+  public Author getAuthor(int authorId) throws AuthorNotExistException {
     BookStorePersistenceLayer bookStorePersistenceLayer = BookStorePersistenceLayer.getInstance();
-    return bookStorePersistenceLayer.getAuthorById(authorId);
+    Author author = bookStorePersistenceLayer.getAuthorById(authorId);
+    if (author == null) {
+      throw new AuthorNotExistException(authorId);
+    }
+    return author;
   }
 
   public Book addBook(String title, Genre genre, int authorId) throws AuthorNotExistException {
@@ -53,5 +58,28 @@ public class BookStoreService {
     author.addBook(book);
     book.addAuthor(author);
     return book;
+  }
+
+  /**
+   * Méthode métier pour la mise à jour d'un auteur
+   * @param id identifiant de l'auteur
+   * @param authorName nom de l'auteur
+   * @return l'auteur modifié
+   * @throws fr.univ.blois.jee.restful.service.AuthorUpdatingProcessAborted en cas d'erreur de mise à jour
+   */
+  public Author updateAuthor(int id, String authorName) throws AuthorUpdatingProcessAborted {
+    try {
+      Author author = getAuthor(id);
+      author.setName(authorName);
+      return author;
+    } catch (AuthorNotExistException e) {
+      throw new AuthorUpdatingProcessAborted(id);
+    }
+  }
+
+
+  public void deleteAuthor(int id) throws DeleteItemNotExist {
+    BookStorePersistenceLayer bookStorePersistenceLayer = BookStorePersistenceLayer.getInstance();
+    bookStorePersistenceLayer.deleteAuthor(id);
   }
 }

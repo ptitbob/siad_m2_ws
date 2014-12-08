@@ -1,23 +1,32 @@
 package fr.univ.blois.jee.restful.domain;
 
+import javax.xml.bind.annotation.*;
+
+import static javax.xml.bind.annotation.XmlAccessType.FIELD;
+
 /**
  * Information de base des livres
  */
+@XmlRootElement(name = "livre")
+@XmlAccessorType(value = FIELD)
 public class BookInformation {
 
   /**
    * Identifiant du livre
    */
+  @XmlAttribute
   private int id;
 
   /**
    * Nom du livre
    */
+  @XmlElement(name = "titre")
   private String title;
 
   /**
    * Genre du livre
    */
+  @XmlAttribute(name = "genre")
   private Genre genre;
 
   public BookInformation() {

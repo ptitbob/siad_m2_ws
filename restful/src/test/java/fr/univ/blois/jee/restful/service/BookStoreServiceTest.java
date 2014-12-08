@@ -22,7 +22,7 @@ public class BookStoreServiceTest {
   @Test
   public void testInitialisationList() {
     BookStoreService bookStoreService = new BookStoreService();
-    List<User> authorList = bookStoreService.getAuthorLisr();
+    List<User> authorList = bookStoreService.getAuthorList();
     assertNotNull(authorList);
     assertTrue(authorList.size() > 0);
     List<BookInformation> bookInformationList = bookStoreService.getBookList();
@@ -31,7 +31,7 @@ public class BookStoreServiceTest {
   }
 
   @Test
-  public void testSaveAndGetAuthor() {
+  public void testSaveAndGetAuthor() throws AuthorNotExistException {
     BookStoreService bookStoreService = new BookStoreService();
     Author author = bookStoreService.addAuthor("J. K. Rowling");
     assertNotNull(author);
@@ -62,5 +62,12 @@ public class BookStoreServiceTest {
   public void testAddBookUnexistantAuthor() throws AuthorNotExistException {
     BookStoreService bookStoreService = new BookStoreService();
     Book book = bookStoreService.addBook("blah blah", Genre.MISC, Integer.MIN_VALUE);
+  }
+
+  @Test(expected = AuthorNotExistException.class)
+  public void testGetUnregisteredAuthor() throws AuthorNotExistException {
+    BookStoreService bookStoreService = new BookStoreService();
+    Author author = bookStoreService.getAuthor(Integer.MAX_VALUE);
+    fail("Nous attendions une exception precise ici");
   }
 }

@@ -1,16 +1,23 @@
 package fr.univ.blois.jee.restful.domain;
 
+import javax.xml.bind.annotation.*;
 import java.util.HashSet;
 import java.util.Set;
+
+import static javax.xml.bind.annotation.XmlAccessType.FIELD;
 
 /**
  * Information sur l'auteur contenant la liste des livres
  */
+@XmlRootElement(name = "auteur")
+@XmlAccessorType(FIELD)
 public class Author extends User {
 
   /**
    * Liste des livres
    */
+  @XmlElementWrapper(name = "livres")
+  @XmlElement(name = "livre")
   private Set<BookInformation> bookList = new HashSet<>();
 
   public Author() {

@@ -1,14 +1,11 @@
 package fr.univ.blois.jee.restful.domain;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 
 /**
  * Created by francois on 02/12/14.
  */
-@XmlRootElement
+@XmlRootElement(name = "auteur")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User {
 
@@ -21,6 +18,7 @@ public class User {
   /**
    * Nom
    */
+  @XmlElement(name = "nom")
   private String name;
 
   public User() {
