@@ -1,7 +1,14 @@
 package fr.univ.blois.siad.m2.ws.jaxb.td01.bean.person;
 
-public abstract class Person {
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public abstract class Person {
+    @XmlAttribute
     private Long id;
 
     private String name;

@@ -4,6 +4,14 @@ public class Donor extends Person {
 
     private int donationAmount;
 
+    public Donor() {
+    }
+
+    public Donor(Long id, String name, String surname, int donationAmount) {
+        super(id, name, surname);
+        this.donationAmount = donationAmount;
+    }
+
     public int getDonationAmount() {
         return donationAmount;
     }

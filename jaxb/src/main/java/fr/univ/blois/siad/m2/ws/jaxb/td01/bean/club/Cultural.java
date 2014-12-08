@@ -4,8 +4,13 @@ public class Cultural extends Association {
 
     private String associationTarget; // Type d'association culturelle (musique, peinture)
 
-    // adresse du local
+    public Cultural() {
+    }
 
+    public Cultural(String name, String associationTarget) {
+        super(name);
+        this.associationTarget = associationTarget;
+    }
 
     public String getAssociationTarget() {
         return associationTarget;
