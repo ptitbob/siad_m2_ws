@@ -23,6 +23,7 @@ public class AuthorApi {
 
     /**
      * Service metier de la boutique de livres (injection de l'instance via CDI)
+     * Ceci est possible grace au fichier beans.xml situé dans le WEB-INF de la webapp et qui a pour configuration d'exploration "all"
      */
     @Inject
     private BookStoreService bookStoreService;
